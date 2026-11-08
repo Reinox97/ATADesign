@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/azaremit-dusk", "destination": "/", "permanent": false },
+    { "source": "/azaremit-dusk/:path*", "destination": "/", "permanent": false }
+  ]
+}
