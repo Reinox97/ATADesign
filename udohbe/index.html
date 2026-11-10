@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="utf-8">
+<title>Udohbé Candles</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic&family=Inria+Sans:wght@400;700&family=Inter:wght@400;500&family=Italiana&family=Karla:wght@400;500&family=Spectral:wght@400;500&display=swap">
+<style>
+/* Layout: 1440 Figma frames, 1248 content column, black/sage/white bands; motion carries page changes, reveals and commerce feedback */
+:root{
+  --black:#000;--ink:#1a1919;--bar:#212121;--nav:#2c0704;--grey2:#4f4f4f;--grey3:#828282;--grey4:#919191;
+  --line:#e6e4df;--soft:#f8f8f8;--card:#f9f7f5;--sage:#c4c2a5;--forest:#344038;--amber:#d99a16;--amberbg:#fffaf0;
+  --rose:#a3123a;--ok:#4ade80;--paper:#fff;--co:#2b2b2b;
+  --display:"Italiana","Didot","Bodoni 72",serif;
+  --serif:"Spectral",Georgia,serif;
+  --times:"Times New Roman",Times,serif;
+  --body:"Karla","Helvetica Neue",Arial,sans-serif;
+  --nav-f:"GFS Neohellenic","Helvetica Neue",Arial,sans-serif;
+  --ui:"Inria Sans","Helvetica Neue",Arial,sans-serif;
+  --inai:"InaiMathi","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --inter:"Inter","Helvetica Neue",Arial,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --gut-l:max(16px,env(safe-area-inset-left,0px));--gut-r:max(16px,env(safe-area-inset-right,0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{background:var(--paper);color:var(--black);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bar)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input{font:inherit}
+:focus-visible{outline:2px solid var(--forest);outline-offset:3px}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(96px,var(--gut-l));padding-right:max(96px,var(--gut-r))}
+@media (max-width:1100px){.wrap{padding-left:max(40px,var(--gut-l));padding-right:max(40px,var(--gut-r))}}
+@media (max-width:640px){.wrap{padding-left:var(--gut-l);padding-right:var(--gut-r)}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- top bar + header ---------- */
+.announce{background:var(--bar);color:#fff;font:400 12px/1 var(--body);letter-spacing:.09em;text-align:center;padding-block:15px;text-transform:uppercase;overflow:hidden;position:relative;z-index:41}
+.announce span{display:inline-block;animation:annIn .9s var(--ease) both .1s}
+@keyframes annIn{from{transform:translateY(120%)}}
+header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(8px);transition:box-shadow .4s var(--ease)}
+header.site.scrolled{box-shadow:0 1px 0 var(--line),0 10px 30px -18px rgba(0,0,0,.25)}
+.hdr{display:flex;align-items:center;gap:40px;height:74px}
+.logo{font:400 26px/1 var(--display);letter-spacing:.02em;color:var(--black);display:inline-flex;transition:letter-spacing .5s var(--ease)}
+.logo:hover{letter-spacing:.08em}
+.nav{display:flex;gap:28px;flex:1}
+.nav a{font:400 12px/1 var(--nav-f);letter-spacing:.03em;color:var(--nav);text-transform:uppercase;position:relative;padding-block:8px}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.nav a:hover::after,.nav a.on::after{transform:scaleX(1);transform-origin:left}
+.tools{display:flex;align-items:center;gap:18px}
+.cur{position:relative}
+.cur>button{display:flex;align-items:center;gap:7px;font:400 12px/1 var(--nav-f);color:var(--nav);margin-right:26px;padding:6px 0}
+.cur>button svg.chev{transition:transform .35s var(--ease)}
+.cur.open>button svg.chev{transform:rotate(180deg)}
+.flag{width:20px;height:13px;border-radius:2px;display:block}
+.icobtn{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;position:relative;transition:background .3s}
+.icobtn:hover{background:#f2f0ec}
+.icobtn svg{width:20px;height:20px}
+.badge{position:absolute;top:2px;right:0;min-width:16px;height:16px;border-radius:8px;background:var(--black);color:#fff;font:500 10px/16px var(--body);text-align:center;padding:0 4px;transform:scale(0);transition:transform .45s var(--ease)}
+.badge.show{transform:scale(1)}
+.badge.bump{animation:bump .6s var(--ease)}
+@keyframes bump{30%{transform:scale(1.5)}}
+.menu{position:absolute;top:calc(100% + 10px);right:0;min-width:160px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 40px -20px rgba(0,0,0,.35);padding:6px;z-index:50;opacity:0;transform:translateY(-6px) scale(.98);transform-origin:top right;pointer-events:none;transition:opacity .25s var(--ease),transform .35s var(--ease)}
+.open>.menu{opacity:1;transform:none;pointer-events:auto}
+.menu button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;padding:10px 12px;font:400 13px/1 var(--body);color:var(--grey2);transition:background .2s,color .2s}
+.menu button:hover{background:var(--card);color:var(--black)}
+.menu button[aria-checked="true"]{color:var(--black)}
+.menu button[aria-checked="true"]::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--black)}
+.burger{display:none}
+@media (max-width:900px){
+  .nav{position:fixed;inset:calc(env(safe-area-inset-top,0px) + 117px) 0 auto 0;flex-direction:column;gap:0;background:#fff;padding:8px var(--gut-r) 20px var(--gut-l);border-bottom:1px solid var(--line);transform:translateY(-12px);opacity:0;pointer-events:none;transition:.4s var(--ease)}
+  .nav a{padding-block:16px;font-size:13px;border-bottom:1px solid var(--line)}
+  body.navopen .nav{opacity:1;transform:none;pointer-events:auto}
+  .burger{display:grid}
+  .hdr{gap:12px;justify-content:space-between}
+  .cur>button{margin-right:4px}
+  .tools{gap:4px}
+}
+@media (max-width:420px){.cur{display:none}}
+
+/* ---------- views & transitions ---------- */
+main{min-height:60vh}
+.view{display:none}
+.view.active{display:block}
+.view.leaving{display:block;animation:leave .32s var(--ease) forwards}
+@keyframes leave{to{opacity:0;transform:translateY(-10px);filter:blur(2px)}}
+.view.entering [data-r]{animation:rise .9s var(--ease) both;animation-delay:calc(var(--i,0) * 70ms + 60ms)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}}
+.curtain{position:fixed;inset:0;z-index:80;pointer-events:none;background:var(--black);transform:scaleY(0);transform-origin:bottom}
+.curtain.go{animation:curtain .85s var(--ease)}
+@keyframes curtain{0%{transform:scaleY(0);transform-origin:bottom}45%{transform:scaleY(1);transform-origin:bottom}55%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(0);transform-origin:top}}
+@supports (animation-timeline:view()){
+  .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 45%}
+  @keyframes rv{from{opacity:0;transform:translateY(36px)}}
+  .rv-x{animation:rvx linear both;animation-timeline:view();animation-range:entry 10% cover 40%}
+  @keyframes rvx{from{transform:scaleY(0)}}
+  .para img{animation:para linear both;animation-timeline:view();animation-range:cover}
+  @keyframes para{from{transform:translateY(-7%) scale(1.14)}to{transform:translateY(7%) scale(1.14)}}
+}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:400 13px/1 var(--body);letter-spacing:.15em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .45s var(--ease),border-color .45s}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;transform:translateY(101%);transition:transform .55s var(--ease)}
+.btn:hover::before{transform:none}
+.btn-white{background:#fff;color:#000;height:66px;padding:0 46px;font-size:12px}
+.btn-white::before{background:#000}.btn-white:hover{color:#fff}
+.btn-ghost{border:1px solid #000;height:44px;padding:0 22px;font-size:11px;letter-spacing:.11em}
+.btn-ghost::before{background:#000}.btn-ghost:hover{color:#fff}
+.btn-forest{background:var(--forest);color:#fff;height:66px;padding:0 54px;font-size:12px}
+.btn-forest::before{background:#000}
+.btn-black{background:#000;color:#fff;height:60px;padding:0 40px;font-size:12px;letter-spacing:.2em}
+.btn-black::before{background:var(--forest)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:min(760px,92vw);min-height:520px;overflow:hidden;background:#b39a7d;color:#fff}
+.hero .bg{position:absolute;inset:-6% 0 0;will-change:transform}
+.hero .bg img{position:absolute;top:0;left:0;width:106%;max-width:none;height:100%;object-fit:cover;object-position:50% 45%;transform:rotate(180deg);filter:brightness(.74) saturate(.72) sepia(.12);animation:kb 2.6s var(--ease) both}
+@keyframes kb{from{transform:rotate(180deg) scale(1.12);filter:brightness(.5) saturate(.6) sepia(.12)}}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.18;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;gap:0}
+.eyebrow{display:flex;align-items:center;gap:14px;font:400 12px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;margin-bottom:32px}
+.eyebrow i{display:block;height:1px;width:min(440px,40vw);background:rgba(255,255,255,.85);transform-origin:left;animation:draw 1.4s var(--ease) both .5s}
+@keyframes draw{from{transform:scaleX(0)}}
+.hero h1{font:400 clamp(48px,6.2vw,88px)/1.07 var(--display);letter-spacing:.04em;margin:0 0 44px;-webkit-text-stroke:.9px currentColor;text-wrap:balance}
+.line{display:block;overflow:hidden;padding-bottom:.06em}
+.line>span{display:inline-block;animation:lineup 1.2s var(--ease) both}
+.line:nth-child(2)>span{animation-delay:.12s}
+@keyframes lineup{from{transform:translateY(105%)}}
+.hero .btn{align-self:flex-start;animation:rise 1s var(--ease) both .55s}
+.hero .eyebrow{animation:rise 1s var(--ease) both .3s}
+.scrollcue{position:absolute;left:50%;bottom:26px;width:1px;height:46px;background:rgba(255,255,255,.35);overflow:hidden}
+.scrollcue::after{content:"";position:absolute;inset:0;background:#fff;animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
+
+/* ---------- features ---------- */
+.features{background:var(--soft)}
+.features .wrap{display:grid;grid-template-columns:repeat(4,1fr);padding-block:56px}
+.feat{text-align:center;padding:0 22px;display:grid;gap:12px;align-content:start;border-left:1px solid #e3e1dc}
+.feat:first-child{border-left:0}
+.feat h3{font:500 18px/1.2 var(--serif);margin:0}
+.feat p{font:400 15px/30px var(--body);color:var(--grey2);margin:0;max-width:230px;justify-self:center}
+@media (max-width:900px){.features .wrap{grid-template-columns:1fr 1fr;row-gap:36px}.feat:nth-child(3){border-left:0}}
+@media (max-width:520px){.features .wrap{grid-template-columns:1fr}.feat{border-left:0;padding:0}.feat+.feat{border-top:1px solid #e3e1dc;padding-top:28px}}
+
+/* ---------- section heads ---------- */
+.shead{text-align:center;display:grid;gap:14px;margin-bottom:56px}
+.shead h2{font:400 clamp(30px,3.4vw,40px)/1.15 var(--display);letter-spacing:.04em;margin:0;-webkit-text-stroke:.35px currentColor;text-wrap:balance}
+.shead p{font:400 clamp(17px,1.6vw,22px)/1.6 var(--inai);letter-spacing:.02em;color:var(--grey2);margin:0}
+.collection{padding-block:96px 88px}
+
+/* ---------- product card ---------- */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media (max-width:900px){.grid3{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.grid3{grid-template-columns:1fr}}
+.card{display:grid;gap:0;min-width:0}
+.card .ph{position:relative;aspect-ratio:400/455;background:var(--card);overflow:hidden;display:grid;place-items:center;max-width:100%}
+.card .ph img{width:62%;height:auto;transition:transform 1s var(--ease),filter .6s;filter:drop-shadow(0 18px 18px rgba(80,40,20,.0))}
+.card:hover .ph img{transform:translateY(-10px) scale(1.04);filter:drop-shadow(0 24px 22px rgba(80,40,20,.18))}
+.card .ph::after{content:"View";position:absolute;left:50%;bottom:22px;transform:translate(-50%,12px);opacity:0;font:400 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;background:#fff;padding:10px 16px;transition:.5s var(--ease)}
+.card:hover .ph::after{opacity:1;transform:translate(-50%,0)}
+.card .info{display:grid;grid-template-columns:1fr auto;align-items:end;gap:6px 12px;padding:22px 20px 0}
+.card h4{grid-column:1/-1;font:400 20px/28px var(--times);color:var(--ink);margin:0}
+.card .sub{grid-column:1/-1;font:400 12px/1.4 var(--body);letter-spacing:.02em;color:var(--grey2);margin:-4px 0 18px}
+.card .price{font:400 18px/1 var(--times)}
+.card .unit{display:block;font:400 10px/1 var(--body);color:var(--grey2);margin-top:12px;letter-spacing:.01em}
+.addc{width:42px;height:42px;border-radius:50%;border:1px solid #d6d3cd;display:grid;place-items:center;transition:background .35s,border-color .35s,transform .5s var(--ease);position:relative}
+.addc svg{width:18px;height:18px;transition:transform .5s var(--ease)}
+.addc:hover{background:#000;border-color:#000;color:#fff}
+.addc:hover svg{transform:rotate(-12deg)}
+.addc.done{background:var(--forest);border-color:var(--forest);color:#fff;transform:scale(1.08)}
+.center{display:flex;justify-content:center}
+
+/* ---------- brand voice ---------- */
+.voice{background:#000;color:#fff}
+.voice .wrap{display:grid;grid-template-columns:1fr auto 1.6fr;align-items:center;gap:56px;padding-block:200px}
+.voice .mark{font:400 48px/1 var(--display);letter-spacing:.03em;text-align:center}
+.voice .vl{width:1px;height:160px;background:rgba(255,255,255,.55);transform-origin:top}
+.voice p{font:400 18px/40px var(--body);letter-spacing:.02em;margin:0;max-width:640px;color:#f4f4f4}
+@media (max-width:800px){.voice .wrap{grid-template-columns:1fr;padding-block:120px;gap:32px;text-align:center}.voice .vl{width:120px;height:1px;justify-self:center}.voice p{line-height:34px;justify-self:center}}
+
+/* ---------- journal ---------- */
+.journal{background:var(--sage)}
+.journal .wrap{display:grid;grid-template-columns:847fr 400fr;padding-block:160px}
+.journal .para{position:relative;overflow:hidden;aspect-ratio:847/500;max-width:100%;min-width:0}
+.journal .para img{width:100%;height:100%;object-fit:cover;display:block}
+.jcard{background:#fff;display:grid;align-content:center;justify-items:center;gap:20px;padding:40px 28px;text-align:center}
+.jcard small{font:400 11px/1 var(--body);letter-spacing:.22em;color:var(--grey3);text-transform:uppercase}
+.jcard h3{font:500 28px/33.6px var(--serif);margin:0 0 6px;max-width:300px;text-wrap:balance}
+@media (max-width:800px){.journal .wrap{grid-template-columns:1fr;padding-block:80px}}
+
+/* ---------- newsletter ---------- */
+.news{padding-block:160px;text-align:center}
+.news h2{font:400 clamp(36px,3.6vw,48px)/1 var(--display);letter-spacing:.04em;margin:0 0 26px;-webkit-text-stroke:.4px currentColor}
+.news p{font:400 20px/1.5 var(--body);color:var(--grey2);margin:0 0 52px}
+.subform{display:flex;gap:40px;justify-content:center;align-items:flex-end;flex-wrap:wrap}
+.uline{position:relative;width:min(415px,100%)}
+.uline input{width:100%;border:0;border-bottom:1px solid #000;padding:16px 0;background:transparent;font:400 15px/1 var(--body);color:#000;outline:none}
+.uline input::placeholder{color:var(--grey3)}
+.uline::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--forest);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.uline:focus-within::after{transform:scaleX(1)}
+.formnote{min-height:22px;margin-top:18px;font:400 14px/1.5 var(--body);color:var(--forest)}
+
+/* ---------- footer ---------- */
+footer{background:#000;color:#fff;padding-block:160px 64px}
+.fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+.fcol h5{font:400 18px/21.6px var(--body);letter-spacing:2px;text-transform:uppercase;margin:0 0 26px}
+.fcol p{font:400 13px/1.5 var(--body);color:#c9c9c9;margin:0 0 54px;max-width:240px}
+.fcol a.lk{font:400 13px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;position:relative;display:inline-block;padding-bottom:6px}
+.fcol a.lk::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fcol a.lk:hover::after{transform:scaleX(1)}
+.payaza{display:inline-flex;gap:5px;align-items:center;border:1px solid #fff;border-radius:6px;padding:6px 8px;font:500 11px/1 var(--body);letter-spacing:.01em}
+.payaza b{font:600 10px/1 var(--inter);letter-spacing:.06em}
+.frow{display:grid;grid-template-columns:1fr 3fr;gap:40px;margin-top:110px}
+.fsub{display:flex;align-items:stretch}
+.fsub input{flex:1;min-width:0;background:transparent;border:0;border-bottom:1px solid #fff;color:#fff;padding:0 34px;font:400 15px/1 var(--body);outline:none;height:80px}
+.fsub input::placeholder{color:#bdbdbd}
+.fsub .btn{background:#fff;color:#000;width:186px;height:80px;letter-spacing:.2em;font-size:13px}
+.fsub .btn::before{background:var(--sage)}
+.socials{display:flex;justify-content:flex-end;gap:22px;margin-top:40px;font:400 15px/1 var(--body);letter-spacing:.06em}
+.socials a{transition:opacity .3s}.socials:hover a{opacity:.45}.socials a:hover{opacity:1}
+.legal{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:6px 30px;margin-top:48px;font:400 13px/1.4 var(--body);color:#6b6b6b}
+.legal span b{color:#fff;font-weight:400}
+.legal a{color:#6b6b6b}.legal a b{color:#fff;font-weight:400}
+@media (max-width:900px){.fgrid{grid-template-columns:1fr 1fr}.frow{grid-template-columns:1fr;margin-top:64px}footer{padding-block:96px 48px}}
+@media (max-width:520px){.fgrid{grid-template-columns:1fr}.fsub{flex-direction:column}.fsub input{padding:0;height:60px}.fsub .btn{width:100%;height:64px;margin-top:16px}.socials,.legal{justify-content:flex-start}}
+
+/* ---------- listing ---------- */
+.crumbs{display:flex;align-items:center;gap:8px;font:400 15px/1 var(--serif);color:var(--grey3)}
+.crumbs a{transition:color .25s}.crumbs a:hover{color:#000}
+.crumbs .here{color:#000}
+.listbar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding-block:56px 34px}
+.filters{display:flex;gap:26px}
+.filt{position:relative}
+.filt>button{display:flex;align-items:center;gap:8px;font:400 15px/1 var(--serif);color:var(--grey3);padding:6px 0;transition:color .25s}
+.filt:first-child>button,.filt.set>button{color:#000}
+.filt>button svg{transition:transform .35s var(--ease)}
+.filt.open>button svg{transform:rotate(180deg)}
+.listing{padding-bottom:88px}
+.listing .grid3{row-gap:56px}
+.counter{text-align:center;font:400 11px/1 var(--body);color:var(--grey3);letter-spacing:.1em;margin:72px 0 16px}
+.progress{width:120px;height:1px;background:var(--line);margin:0 auto 22px;position:relative;overflow:hidden}
+.progress i{position:absolute;inset:0;background:#000;transform-origin:left;transition:transform .8s var(--ease)}
+.card.new{animation:rise .9s var(--ease) both;animation-delay:calc(var(--i,0) * 80ms)}
+
+/* ---------- product ---------- */
+.pd{padding-block:20px 0}
+.pdgrid{display:grid;grid-template-columns:560fr 416fr;gap:80px;padding:56px 64px 96px 128px;align-items:start}
+@media (max-width:1100px){.pdgrid{padding:48px 0 80px;gap:48px}}
+@media (max-width:800px){.pdgrid{grid-template-columns:1fr}}
+.gallery{position:relative;aspect-ratio:560/630;max-width:100%;min-width:0;background:linear-gradient(180deg,#ecebe8 0%,#f6f5f2 58%,#fff 100%);border:1px solid #f1efeb;display:grid;place-items:center;overflow:hidden;cursor:zoom-in}
+.gallery img{width:62%;transition:transform .9s var(--ease);will-change:transform}
+.gallery:hover img{transform:scale(1.16)}
+.gallery .shine{position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);transform:translateX(-100%);animation:shine 2.4s var(--ease) 1s both}
+@keyframes shine{to{transform:translateX(100%)}}
+.pinfo{display:grid;gap:0;min-width:0}
+.pinfo h1{font:400 28px/1.2 var(--serif);margin:0 0 26px}
+.acc{border-bottom:1px solid var(--line)}
+.acc>button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 0;font:400 12px/1 var(--inter);letter-spacing:.04em;color:var(--grey3);text-transform:uppercase}
+.acc>button svg{transition:transform .45s var(--ease);transform:rotate(180deg)}
+.acc.open>button svg{transform:none}
+.acc .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s var(--ease)}
+.acc.open .body{grid-template-rows:1fr}
+.acc .body>div{overflow:hidden}
+.acc .body p{font:400 13px/1.38 var(--ui);color:var(--grey2);margin:0;padding:0 0 10px;letter-spacing:-.01em}
+.sizes h6{font:400 12px/1 var(--inter);letter-spacing:.04em;margin:30px 0 14px;color:var(--co)}
+.sizerow{display:flex;gap:8px;position:relative}
+.sz{width:36px;display:grid;justify-items:center;gap:6px;padding:4px 0 6px;font:400 8px/1 var(--inter);color:var(--grey3)}
+.sz img{width:28px;height:auto;transition:transform .4s var(--ease)}
+.sz:hover img{transform:translateY(-3px)}
+.sz[aria-checked="true"]{color:#000}
+.szind{position:absolute;top:0;height:100%;border:1px solid var(--grey3);border-radius:1px;pointer-events:none;transition:left .5s var(--ease),width .5s var(--ease)}
+.qp{display:flex;justify-content:space-between;align-items:flex-end;margin-top:34px}
+.qp label,.qp .pl{display:block;font:400 12px/1 var(--inter);letter-spacing:.04em;color:var(--co);margin-bottom:16px}
+.qp .pl{text-align:right}
+.stepper{display:flex;align-items:center;gap:22px;border-bottom:1px solid var(--grey3);padding-bottom:8px;width:72px;justify-content:space-between}
+.stepper button{width:16px;height:16px;display:grid;place-items:center;color:var(--grey3);transition:color .2s,transform .3s var(--ease)}
+.stepper button:hover{color:#000}
+.stepper button:active{transform:scale(.8)}
+.stepper output{font:400 13px/1 var(--inter);min-width:12px;text-align:center;display:inline-block}
+.tick{animation:tick .35s var(--ease)}
+@keyframes tick{from{transform:translateY(-60%);opacity:0}}
+.bigprice{font:500 22px/1 var(--serif);font-variant-numeric:tabular-nums}
+.addcart{margin-top:52px;width:100%;height:36px;background:#000;color:#fff;font:400 12px/1 var(--serif);letter-spacing:.12em;text-transform:uppercase;position:relative;overflow:hidden}
+.addcart .fill{position:absolute;inset:0;background:var(--forest);transform:scaleX(0);transform-origin:left}
+.addcart.busy .fill{animation:fill .9s var(--ease) forwards}
+@keyframes fill{to{transform:scaleX(1)}}
+.addcart span{position:relative}
+.also{border-top:1px solid var(--line);padding-block:64px 96px}
+.also h2{font:400 28px/1.2 var(--serif);text-align:center;margin:0 0 40px}
+
+/* ---------- checkout ---------- */
+.co{padding-block:28px 112px;font-family:var(--ui);color:var(--co)}
+.steps{display:flex;align-items:center;gap:14px;font:400 15px/1 var(--ui);color:var(--grey4);margin-bottom:24px}
+.steps .now{color:var(--nav)}
+.cogrid{display:grid;grid-template-columns:842fr 406fr;gap:32px;align-items:start}
+@media (max-width:1000px){.cogrid{grid-template-columns:1fr}}
+.box{border:1px solid #ececec;border-radius:8px;padding:30px 40px 34px;display:grid;gap:22px}
+.box+.box{margin-top:36px}
+.box h3{display:flex;align-items:center;gap:10px;font:700 20px/1 var(--ui);letter-spacing:-.02em;margin:0 0 4px}
+.box h3 b{width:20px;height:20px;border-radius:50%;background:#1a1a1a;color:#fff;display:grid;place-items:center;font:700 11px/1 var(--ui)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:22px 24px}
+.fields .full{grid-column:1/-1}
+@media (max-width:600px){.fields{grid-template-columns:1fr}.box{padding:24px 20px}}
+.fld{display:grid;gap:12px;position:relative;padding-bottom:14px;border-bottom:1px solid #e3e3e3}
+.fld label{font:700 14px/1 var(--ui);letter-spacing:-.02em;color:#1d1d1d}
+.fld input{border:0;outline:none;background:transparent;font:400 16px/1 var(--nav-f);letter-spacing:-.02em;color:var(--co);padding:0}
+.fld input::placeholder{color:var(--grey4)}
+.fld::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:#000;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within::after{transform:scaleX(1)}
+.ship{display:grid;grid-template-columns:1fr 1fr;gap:20px 20px}
+@media (max-width:600px){.ship{grid-template-columns:1fr}}
+.opt{display:grid;grid-template-columns:auto 1fr auto;gap:6px 12px;align-items:start;border:1px solid #ededed;border-radius:4px;padding:14px 14px 14px 12px;text-align:left;transition:border-color .35s,background .35s,transform .35s var(--ease)}
+.opt:hover{transform:translateY(-2px)}
+.opt .rd{width:16px;height:16px;border-radius:50%;border:1px solid #bdbdbd;display:grid;place-items:center;margin-top:1px;grid-column:1;grid-row:1/3}
+.opt strong{grid-column:2;grid-row:1}
+.opt .rd::after{content:"";width:10px;height:10px;border-radius:50%;background:#111;transform:scale(0);transition:transform .35s var(--ease)}
+.opt[aria-checked="true"] .rd{border-color:#111}
+.opt[aria-checked="true"] .rd::after{transform:scale(1)}
+.opt strong{font:700 14px/1.2 var(--ui);letter-spacing:-.02em}
+.opt em{font:400 13px/1.3 var(--ui);font-style:normal;color:var(--grey3);grid-column:2;grid-row:2}
+.opt .amt{font:700 13px/1 var(--ui);grid-column:3;grid-row:1/3;align-self:center}
+.opt.intl{border-color:#efc56b;background:var(--amberbg)}
+.opt.intl strong{color:var(--amber)}
+.summary{background:#f9f9f9;border-radius:8px;padding:0 28px 26px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 92px)}
+.summary h3{font:700 20px/1 var(--ui);letter-spacing:-.02em;margin:0 -28px;padding:30px 28px 22px;border-bottom:1px solid #ececec}
+.items{display:grid}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:12px 18px;padding:24px 0 20px;border-bottom:1px solid #ececec;overflow:hidden;transition:opacity .4s,transform .5s var(--ease)}
+.item.gone{opacity:0;transform:translateX(30px)}
+.item img{width:52px;justify-self:center}
+.item h5{font:400 14px/1.2 var(--times);margin:0 0 5px;color:#111}
+.item small{font:400 11px/1 var(--ui);color:#333;display:block;margin-bottom:12px}
+.item .p{font:700 12px/1 var(--ui);font-variant-numeric:tabular-nums}
+.mini{display:flex;align-items:center;gap:10px;font:400 11px/1 var(--ui)}
+.mini button{width:14px;height:14px;display:grid;place-items:center}
+.mini output{width:20px;height:18px;border:1px solid #e3e3e3;display:grid;place-items:center;font:400 10px/1 var(--ui)}
+.mini .rm{width:auto;height:auto;color:var(--rose);margin-left:8px;font:400 11px/1 var(--ui)}
+.mini .rm:hover{text-decoration:underline}
+.totals{display:grid;gap:12px;padding-top:50px;font:400 13px/1 var(--ui);color:#6b6b6b}
+.totals div{display:flex;justify-content:space-between}
+.totals b{color:#2b2b2b;font-weight:700;font-variant-numeric:tabular-nums}
+.totals .grand{border-top:1px solid #e6e6e6;padding-top:22px;margin-top:20px}
+.pay{margin-top:24px;width:100%;height:34px;background:#000;color:#fff;font:700 13px/1 var(--ui);letter-spacing:-.01em;position:relative;overflow:hidden;border-radius:1px}
+.pay .bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--ok);transform:scaleX(0);transform-origin:left}
+.pay.busy .bar{animation:fill 1.3s var(--ease) forwards}
+.empty{padding:28px 0;font:400 14px/1.5 var(--ui);color:var(--grey3)}
+
+/* ---------- order placed ---------- */
+.op{padding-block:44px 84px;font-family:var(--ui)}
+.opcard{max-width:538px;margin:0 auto;border:1px solid #f1f1f1;border-radius:6px;box-shadow:0 10px 30px -20px rgba(0,0,0,.18);padding:36px 33px 26px}
+.okic{width:42px;height:42px;margin:0 auto 22px;border-radius:7px;background:var(--ok);display:grid;place-items:center;animation:pop .8s var(--ease) both .15s}
+@keyframes pop{from{transform:scale(.3) rotate(-25deg);opacity:0}}
+.okic path{stroke-dasharray:24;stroke-dashoffset:24;animation:dash .6s var(--ease) forwards .6s}
+@keyframes dash{to{stroke-dashoffset:0}}
+.opcard h1{font:700 20px/1 var(--ui);text-align:center;margin:0 0 14px;color:#141414}
+.opcard .lead{text-align:center;font:400 13px/1 var(--ui);color:#333;margin:0 0 34px}
+.opcard hr{border:0;border-top:1px solid #ececec;margin:0}
+.opcard h4{font:700 13px/1 var(--ui);color:#333;margin:28px 0 14px}
+.oi{display:grid;grid-template-columns:60px 1fr auto;gap:14px;margin-bottom:14px}
+.oi .th{width:60px;height:60px;border:1px solid #eee;border-radius:2px;display:grid;place-items:center;overflow:hidden}
+.oi .th img{width:40px}
+.oi p{font:400 11px/1.1 var(--ui);color:#111;margin:0 0 10px;max-width:170px}
+.oi small{display:block;font:400 9px/1.5 var(--ui);color:#555}
+.oi .p{font:700 12px/1 var(--ui);color:#333;padding-top:6px}
+.orow{display:flex;justify-content:space-between;font:400 13px/1 var(--ui);color:#555;padding-block:10px}
+.orow b{font-weight:700;color:#333}
+.orow.t{color:#111;font-weight:700}
+.orow+hr,hr+.orow{margin-top:8px}
+.orow.addr span:last-child{text-align:right;line-height:1.35;max-width:200px}
+.cont{display:block;width:100%;height:34px;background:#000;color:#fff;font:700 12px/34px var(--ui);text-align:center;margin-top:26px;transition:background .35s}
+.cont:hover{background:var(--forest)}
+
+/* ---------- contact ---------- */
+.contact{padding-block:110px 140px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.cgrid>div:last-child{max-width:470px}
+@media (max-width:800px){.cgrid{grid-template-columns:1fr}.cgrid>div:first-child{display:none}}
+.contact h1{font:700 48px/1.1 var(--times);margin:0 0 30px}
+.contact h2{font:400 48px/1.08 var(--times);color:#8a8a8a;margin:0 0 30px;text-wrap:balance}
+.contact .intro{font:400 15px/23px var(--inter);color:#3b3b3b;margin:0 0 28px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.cinfo{display:grid;gap:22px;font:400 13px/1 var(--inter)}
+.cinfo dt{font:400 13px/1 var(--inter);color:var(--grey3);text-transform:uppercase;margin-bottom:8px}
+.cinfo dd{margin:0;color:#2c2c2c}
+.cinfo dd.mail span{border-bottom:1px solid #2c2c2c}
+.copy{margin-left:10px;font:400 11px/1 var(--inter);color:var(--grey3);border:1px solid var(--line);padding:4px 7px;border-radius:3px;transition:.25s}
+.copy:hover{color:#000;border-color:#000}
+@media (max-width:520px){.contact h1,.contact h2{font-size:36px}}
+
+/* ---------- faq ---------- */
+.faq{padding-block:88px 140px}
+.fqgrid{display:grid;grid-template-columns:190fr 636fr;gap:0;max-width:1016px;margin-left:clamp(0px,10vw,190px)}
+.fqnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 110px);align-self:start;display:grid;gap:14px;padding-left:16px;font:400 13px/1 var(--inter);color:var(--grey3);border-left:1px solid #e4e4e4;height:max-content}
+.fqnav a{transition:color .3s}.fqnav a.on{color:#000}
+.fqnav i{position:absolute;left:-1px;top:0;width:2px;height:21px;background:#000;transition:transform .5s var(--ease)}
+.fqnav a{position:relative;line-height:21px}
+@media (max-width:800px){.fqgrid{grid-template-columns:1fr;margin-left:0}.fqnav{position:static;grid-auto-flow:column;justify-content:start;gap:22px;margin-bottom:36px}}
+.faq h1{font:400 40px/46px var(--times);margin:0 0 40px;max-width:300px}
+.qa{background:#f2f2f2;margin-bottom:14px}
+.qa>button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;padding:13px 20px;font:700 13px/1.2 var(--times);gap:16px}
+.qa>button svg{flex:none;transition:transform .45s var(--ease)}
+.qa.open>button svg{transform:rotate(90deg)}
+.qa .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.qa.open .body{grid-template-rows:1fr}
+.qa .body>div{overflow:hidden}
+.qa .body p{margin:0;padding:2px 20px 16px;font:400 13px/1.6 var(--inria,var(--ui));color:#3c3c3c}
+.qa .body a{color:#2f6fe4;text-decoration:underline;text-underline-offset:3px}
+.faq h2{font:400 40px/1.15 var(--times);margin:70px 0 40px}
+.faq .prose p{font:400 17px/28px var(--ui);color:#4a4a4a;margin:0 0 28px}
+.faq .prose p.tight{margin:0}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);background:#000;color:#fff;padding:14px 16px 14px 14px;display:flex;gap:12px;align-items:center;font:400 13px/1.2 var(--body);z-index:70;transition:transform .6s var(--ease);max-width:calc(100% - 32px)}
+.toast.show{transform:translate(-50%,0)}
+.toast img{width:28px}
+.toast a{text-decoration:underline;text-underline-offset:3px;margin-left:10px;white-space:nowrap}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="announce"><span>Free shipping on orders above £250</span></div>
+<header class="site" id="hdr">
+  <div class="wrap hdr">
+    <a class="logo" href="#home" aria-label="Udohbé home">UDOHBÉ</a>
+    <nav class="nav" id="nav"></nav>
+    <div class="tools">
+      <div class="cur" id="cur">
+        <button type="button" aria-haspopup="true" aria-expanded="false"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg><span id="curl">GBP</span><svg class="chev" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="menu" role="menu">
+          <button role="menuitemradio" aria-checked="true" data-c="GBP">GBP £</button>
+          <button role="menuitemradio" aria-checked="false" data-c="USD">USD $</button>
+          <button role="menuitemradio" aria-checked="false" data-c="NGN">NGN ₦</button>
+        </div>
+      </div>
+      <button class="icobtn" type="button" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
+      <button class="icobtn" type="button" aria-label="Wishlist" id="heart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20s-7.5-4.6-9-9.3C2 7.4 4.3 4.5 7.4 4.5c2 0 3.6 1.2 4.6 2.8 1-1.6 2.6-2.8 4.6-2.8 3.1 0 5.4 2.9 4.4 6.2C19.5 15.4 12 20 12 20z"/></svg></button>
+      <a class="icobtn" href="#checkout" aria-label="Bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></svg><span class="badge" id="badge">3</span></a>
+      <button class="icobtn burger" type="button" aria-label="Menu" id="burger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8h16M4 16h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ================= HOME ================= -->
+<section class="view" data-view="home">
+  <div class="hero">
+    <div class="bg" id="herobg"><img src="img/hero.webp" alt="Lit candle in a dark glass jar beside its cork lid on a sand-coloured surface"></div>
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="eyebrow">Udohbe Candles <i></i></div>
+      <h1><span class="line"><span>Illuminate Your</span></span><span class="line"><span>Senses Right</span></span></h1>
+      <a class="btn btn-white" href="#all-candles">Shop now</a>
+    </div>
+    <div class="scrollcue" aria-hidden="true"></div>
+  </div>
+  <div class="features">
+    <div class="wrap">
+      <div class="feat" data-r style="--i:4"><h3>Express shipping</h3><p>Express shipping on all domestic orders.</p></div>
+      <div class="feat" data-r style="--i:5"><h3>Exchange</h3><p>Exchange your bad product or get your money back</p></div>
+      <div class="feat" data-r style="--i:6"><h3>Return period</h3><p>Something you bought isn’t it? Please send it back within 1 day.</p></div>
+      <div class="feat" data-r style="--i:7"><h3>Money back guarantee</h3><p>Get a full refund for all products, no questions asked</p></div>
+    </div>
+  </div>
+  <div class="wrap collection">
+    <div class="shead rv"><h2>Illuminate Your Senses</h2><p>Shop some of the classics we have today and get peace of mind</p></div>
+    <div class="grid3" data-cards="3"></div>
+    <div class="center" style="margin-top:72px"><a class="btn btn-ghost rv" href="#all-candles">Shop all candles</a></div>
+  </div>
+  <div class="voice">
+    <div class="wrap">
+      <div class="mark rv">UDOHBÉ</div>
+      <div class="vl rv-x"></div>
+      <p class="rv">Our brand voice resonates with the essence of opulence, offering a sensory experience that transcends the ordinary. UDOHBÉ speaks the language of grace, sophistication, and refined beauty. In everycreation, we weave a narrative of charm and timeless allure.</p>
+    </div>
+  </div>
+  <div class="journal">
+    <div class="wrap">
+      <div class="para rv"><img src="img/editorial.webp" alt="Woman in a fringed white top crouching on weathered coastal rocks"></div>
+      <div class="jcard rv">
+        <small>Featured journal</small>
+        <h3>We explored beaches in search for inspiration</h3>
+        <a class="btn btn-forest" href="#all-candles">Shop now</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap news">
+    <h2 class="rv">Stay up to-date</h2>
+    <p class="rv">Subscribe to our newsletter to get updated with more sweet content</p>
+    <form class="subform rv" data-sub novalidate>
+      <div class="uline"><label class="sr" for="nl-email">Email Address</label><input id="nl-email" type="email" placeholder="Email Address" autocomplete="email"></div>
+      <button class="btn btn-black" type="submit">Subscribe</button>
+    </form>
+    <div class="formnote" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ================= LISTING ================= -->
+<section class="view" data-view="all-candles">
+  <div class="wrap listing">
+    <div class="listbar">
+      <nav class="crumbs" data-r aria-label="Breadcrumb"><a href="#home">Home</a><span>/</span><span class="here">All Candles</span></nav>
+      <div class="filters" data-r style="--i:1">
+        <div class="filt"><button type="button" aria-expanded="false">Size <svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 1l4 4 4-4"/></svg></button><div class="menu" role="menu"><button role="menuitemradio" aria-checked="false">250gm</button><button role="menuitemradio" aria-checked="false">500gm</button><button role="menuitemradio" aria-checked="false">1,000gm</button></div></div>
+        <div class="filt"><button type="button" aria-expanded="false">Type <svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 1l4 4 4-4"/></svg></button><div class="menu" role="menu"><button role="menuitemradio" aria-checked="false">Scented</button><button role="menuitemradio" aria-checked="false">Flower</button><button role="menuitemradio" aria-checked="false">Luxury</button></div></div>
+        <div class="filt"><button type="button" aria-expanded="false">Color <svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 1l4 4 4-4"/></svg></button><div class="menu" role="menu"><button role="menuitemradio" aria-checked="false">Copper</button><button role="menuitemradio" aria-checked="false">Ivory</button><button role="menuitemradio" aria-checked="false">Onyx</button></div></div>
+        <div class="filt"><button type="button" aria-expanded="false">Sort <svg width="9" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 1l4 4 4-4"/></svg></button><div class="menu" role="menu"><button role="menuitemradio" aria-checked="false">Featured</button><button role="menuitemradio" aria-checked="false">Price: low to high</button><button role="menuitemradio" aria-checked="false">Price: high to low</button></div></div>
+      </div>
+    </div>
+    <div class="grid3" id="listgrid"></div>
+    <div class="counter" id="count">9/27</div>
+    <div class="progress"><i id="prog" style="transform:scaleX(.333)"></i></div>
+    <div class="center"><button class="btn btn-ghost" id="more" type="button">View more items</button></div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT ================= -->
+<section class="view" data-view="product">
+  <div class="wrap pd">
+    <nav class="crumbs" data-r aria-label="Breadcrumb" style="padding-top:16px"><a href="#home">Home</a><span>/</span><a href="#all-candles">Luxury</a><span>/</span><span class="here">Suede Vanilla</span></nav>
+    <div class="pdgrid">
+      <div class="gallery" data-r style="--i:1" id="gal"><img src="img/product.webp" alt="Suede Vanilla candle in a copper jar"><span class="shine"></span></div>
+      <div class="pinfo">
+        <h1 data-r style="--i:2">Suede Vanilla</h1>
+        <div class="acc open" data-r style="--i:3"><button type="button" aria-expanded="true">Description <svg width="11" height="7" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 5l4-4 4 4"/></svg></button><div class="body"><div><p>Introducing our stunning Black Elegance Dress - a timeless piece that exudes sophistication and versatility. Crafted with meticulous attention to detail, this black dress is a must-have addition to your wardrobe.</p></div></div></div>
+        <div class="acc" data-r style="--i:4"><button type="button" aria-expanded="false">Product details <svg width="11" height="7" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 5l4-4 4 4"/></svg></button><div class="body"><div><p>Private Collection, luxury scented candle. Available in 250gm, 500gm and 1,000gm.</p></div></div></div>
+        <div class="sizes" data-r style="--i:5">
+          <h6>Available sizes</h6>
+          <div class="sizerow" role="radiogroup" aria-label="Size" id="sizes">
+            <span class="szind" id="szind"></span>
+            <button class="sz" role="radio" aria-checked="false" type="button"><img src="img/product.webp" alt="">250gm</button>
+            <button class="sz" role="radio" aria-checked="true" type="button"><img src="img/product.webp" alt="">500gm</button>
+            <button class="sz" role="radio" aria-checked="false" type="button"><img src="img/product.webp" alt="">1,000gm</button>
+          </div>
+        </div>
+        <div class="qp" data-r style="--i:6">
+          <div><label for="qty">Qty</label><div class="stepper"><button type="button" aria-label="Decrease quantity" data-q="-1"><svg width="10" height="2" viewBox="0 0 10 2"><path d="M0 1h10" stroke="currentColor"/></svg></button><output id="qty">1</output><button type="button" aria-label="Increase quantity" data-q="1"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 5h10M5 0v10" stroke="currentColor"/></svg></button></div></div>
+          <div><span class="pl">Price</span><div class="bigprice" id="pprice">£410.50</div></div>
+        </div>
+        <button class="addcart" type="button" id="addcart" data-r style="--i:7"><span class="fill"></span><span id="addl">Add to cart</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap also">
+    <h2 class="rv">You May Also Like</h2>
+    <div class="grid3" data-cards="3"></div>
+  </div>
+</section>
+
+<!-- ================= CHECKOUT ================= -->
+<section class="view" data-view="checkout">
+  <div class="wrap co">
+    <nav class="steps" data-r aria-label="Checkout steps"><span>Cart</span><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor"><path d="M1 1l4.5 4.5L1 10"/></svg><span class="now">Checkout</span><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor"><path d="M1 1l4.5 4.5L1 10"/></svg><span>Payment</span></nav>
+    <div class="cogrid">
+      <form id="coform" novalidate>
+        <div class="box" data-r style="--i:1">
+          <h3><b>1</b>Personal details</h3>
+          <div class="fields">
+            <div class="fld"><label for="fn">First Name</label><input id="fn" placeholder="Your first name" autocomplete="given-name"></div>
+            <div class="fld"><label for="ln">Last Name</label><input id="ln" placeholder="Your last name" autocomplete="family-name"></div>
+            <div class="fld"><label for="ph">Phone Number</label><input id="ph" placeholder="Your first name" autocomplete="tel"></div>
+            <div class="fld"><label for="em">Email Address</label><input id="em" placeholder="Your email address" autocomplete="email"></div>
+          </div>
+        </div>
+        <div class="box" data-r style="--i:2">
+          <h3><b>2</b>Shipment Information</h3>
+          <div class="fields">
+            <div class="fld full"><label for="ct">Country</label><input id="ct" placeholder="Enter Country" autocomplete="country-name"></div>
+            <div class="fld"><label for="cy">City</label><input id="cy" placeholder="Your first name" autocomplete="address-level2"></div>
+            <div class="fld"><label for="rg">Region</label><input id="rg" placeholder="Your last name" autocomplete="address-level1"></div>
+            <div class="fld full" style="border-bottom:0;padding-bottom:0"><label for="ad">Full Address</label><input id="ad" placeholder="Your first name" autocomplete="street-address"></div>
+          </div>
+        </div>
+        <div class="box" data-r style="--i:3">
+          <h3><b>3</b>Shipping Method</h3>
+          <div class="ship" role="radiogroup" aria-label="Shipping method" id="ship">
+            <button type="button" class="opt" role="radio" aria-checked="true" data-fee="1"><span class="rd"></span><strong>Free Shipping</strong><span class="amt">£1.00</span><em>14-30 business days</em></button>
+            <button type="button" class="opt intl" role="radio" aria-checked="false" data-fee="0"><span class="rd"></span><strong>International Shipping</strong><em>We’ll be in touch after your order is made</em></button>
+            <button type="button" class="opt" role="radio" aria-checked="false" data-fee="10"><span class="rd"></span><strong>Regular Shipping</strong><span class="amt">£10.00</span><em>14-30 business days</em></button>
+          </div>
+        </div>
+      </form>
+      <aside class="summary" data-r style="--i:2">
+        <h3>Order Details</h3>
+        <div class="items" id="items"></div>
+        <div class="totals">
+          <div><span>Subtotal</span><b id="t-sub">£60.60</b></div>
+          <div><span>Discount</span><b id="t-dis">-£0.60</b></div>
+          <div><span>Shipment cost</span><b id="t-ship">£0.00</b></div>
+          <div class="grand"><span>Total Amount</span><b id="t-tot">£61.00</b></div>
+        </div>
+        <button class="pay" type="button" id="pay"><span class="bar"></span><span id="payl">Pay with Payaza</span></button>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ORDER PLACED ================= -->
+<section class="view" data-view="order-placed">
+  <div class="wrap op">
+    <div class="opcard">
+      <div class="okic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h1 data-r style="--i:2">Order Successful</h1>
+      <p class="lead" data-r style="--i:3">Order confirmation will be sent to your mail</p>
+      <hr>
+      <h4 data-r style="--i:4">Your Orders</h4>
+      <div class="oi" data-r style="--i:5"><span class="th"><img src="img/product.webp" alt=""></span><div><p>Udohbe women dress for women with high value and class</p><small>Size: 250gm</small><small>x1</small></div><span class="p">£10.00</span></div>
+      <div class="oi" data-r style="--i:6"><span class="th"><img src="img/product.webp" alt=""></span><div><p>Udohbe women dress for women with high value and class</p><small>Size: 250gm</small><small>x1</small></div><span class="p">£480.00</span></div>
+      <div class="oi" data-r style="--i:7"><span class="th"><img src="img/product.webp" alt=""></span><div><p>Udohbe women dress for women with high value and class</p><small>Size: 250gm</small><small>x1</small></div><span class="p">£480.00</span></div>
+      <hr style="margin-top:20px">
+      <div class="orow" data-r style="--i:8"><span>Subtotal</span><span>£1,280.00</span></div>
+      <hr>
+      <div class="orow" data-r style="--i:9"><span>Discount</span><span>$10</span></div>
+      <div class="orow" data-r style="--i:9"><span>Shipping Fee</span><span>$10</span></div>
+      <div class="orow t" data-r style="--i:10"><span>Total</span><span>£1240.80</span></div>
+      <hr style="margin-top:12px">
+      <h4 data-r style="--i:10">Shipping details</h4>
+      <div class="orow" data-r style="--i:11"><span>Name</span><span>Dumebi London</span></div>
+      <div class="orow addr" data-r style="--i:11"><span>Address</span><span>Highway Street London, Avenue Croydon Street, Persenton</span></div>
+      <div class="orow" data-r style="--i:12"><span>Contact</span><span>+44 17720 2992 0291</span></div>
+      <a class="cont" href="#all-candles" data-r style="--i:12">Continue Shopping</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="view" data-view="contact">
+  <div class="wrap contact">
+    <div class="cgrid">
+      <div></div>
+      <div>
+        <h1 data-r>Contact Us</h1>
+        <h2 data-r style="--i:1">Your questions, our expertise.</h2>
+        <p class="intro" data-r style="--i:2">Have questions? Tap into our expertise by getting in touch. We're here to provide the answers you need</p>
+        <dl class="cinfo">
+          <div data-r style="--i:3"><dt>Call us</dt><dd>+234 800 000 0000</dd></div>
+          <div data-r style="--i:4"><dt>Send a mail</dt><dd class="mail"><span>hello@udohbe.com</span><button class="copy" type="button" data-copy="hello@udohbe.com">Copy</button></dd></div>
+          <div data-r style="--i:5"><dt>Pay us a visit</dt><dd>James Garden No.12 Ilesati Street Lekki Phase1</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="view" data-view="faq">
+  <div class="wrap faq">
+    <div class="fqgrid">
+      <nav class="fqnav" id="fqnav" data-r><i></i><a href="#faq" data-to="faqs" class="on">FAQs</a><a href="#faq" data-to="returns">Return Policy</a><a href="#faq" data-to="disclaimer">Disclaimer</a></nav>
+      <div style="min-width:0">
+        <h1 id="faqs" data-r style="--i:1">Frequently Asked Questions</h1>
+        <div class="qa open" data-r style="--i:2"><button type="button" aria-expanded="true">How do I contact UDOHBE? <svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor"><path d="M1 1l4 4-4 4"/></svg></button><div class="body"><div><p><a href="#contact">info@udohbe.com</a></p></div></div></div>
+        <div class="qa" data-r style="--i:3"><button type="button" aria-expanded="false">How do I keep up with everything UDOHBE? <svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor"><path d="M1 1l4 4-4 4"/></svg></button><div class="body"><div><p>Subscribe to our newsletter at the bottom of the home page, or follow us on Tiktok, Facebook, Twitter and Instagram.</p></div></div></div>
+        <div class="qa" data-r style="--i:4"><button type="button" aria-expanded="false">Do you offer international shipping? <svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor"><path d="M1 1l4 4-4 4"/></svg></button><div class="body"><div><p>Yes. International orders may be subject to import duties, taxes, and fees levied by the destination country. See the Disclaimer below.</p></div></div></div>
+        <div class="qa" data-r style="--i:5"><button type="button" aria-expanded="false">Can I return or exchange my order? <svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor"><path d="M1 1l4 4-4 4"/></svg></button><div class="body"><div><p>We have a RETURN-only policy for faulty products. Read the full Return Policy below.</p></div></div></div>
+        <div class="qa" data-r style="--i:6"><button type="button" aria-expanded="false">Do you offer refund? <svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor"><path d="M1 1l4 4-4 4"/></svg></button><div class="body"><div><p>Approved returns are deducted from your store credit. Shipping charges and custom fees are non-refundable.</p></div></div></div>
+        <h2 id="returns" class="rv">Return Policy</h2>
+        <div class="prose rv">
+          <p>While we meticulously inspect each item before dispatch, we acknowledge that errors might occur. In the event of receiving faulty products, we have an RETURN-only policy. Defects and damages are eligible for Return within the initial 7 days for US customers and 14 days for international customers.</p>
+          <p class="tight">Please make your selections thoughtfully and with purpose. For a successful return, ensure your item is in its original condition – unworn, unused, with tags, and in the original packaging.</p>
+          <p>Approval from us is necessary to initiate the process. If we receive your return in suboptimal condition, it will be sent back at your expense, deducted from your store credit.</p>
+          <p> To commence a return, utilize our return portal; however, shipping charges and custom fees are non-refundable. Bear in mind that you are responsible for the return shipping costs, and the initial shipping costs are not refundable. For inquiries, reach out to us via email at info@shopakemma.com</p>
+        </div>
+        <h2 id="disclaimer" class="rv">Disclaimer</h2>
+        <div class="prose rv">
+          <p>Import Duty Disclaimer: International orders may be subject to import duties, taxes, and fees levied by the destination country. The recipient of an international shipment may be required to pay these additional charges upon delivery.</p>
+          <p>Please note that customs policies and import duties vary widely from country to country, and UDOHBE has no control over these charges. To ensure compliance with local regulations, we recommend checking with your local customs office for information on any potential fees before placing an order. By placing an international order with us, you acknowledge and accept responsibility for any additional charges that may be incurred."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fcol rv"><h5>Payment</h5><span class="payaza">Powered by <b>PAYAZA</b></span></div>
+      <div class="fcol rv"><h5>Shop</h5><p>Discover carefully refined clothing made in Turkish traditions &amp; inspired by cultures from all over the world.</p><a class="lk" href="#all-candles">View shop</a></div>
+      <div class="fcol rv"><h5>About</h5><p>We got the idea to make the finest fashion pieces when our friend group visited Costa Rica.</p><a class="lk" href="#home">View about</a></div>
+      <div class="fcol rv"><h5>Journal</h5><p>See latest updates in the fashion world &amp; behind the scenes of how we design every product.</p><a class="lk" href="#home">View journal</a></div>
+    </div>
+    <div class="frow">
+      <div></div>
+      <div>
+        <form class="fsub" data-sub novalidate><label class="sr" for="ft-email">Email</label><input id="ft-email" type="email" placeholder="Enter your emal to get latest news" autocomplete="email"><button class="btn" type="submit">Subscribe</button></form>
+        <div class="formnote" aria-live="polite" style="color:#c4c2a5"></div>
+        <div class="socials"><a href="https://www.tiktok.com" target="_blank" rel="noopener">Tiktok</a><a href="https://www.facebook.com" target="_blank" rel="noopener">Facebook</a><a href="https://twitter.com" target="_blank" rel="noopener">Twitter</a><a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a></div>
+        <div class="legal"><span>© 2024 Udohbe <b>Copyright</b></span><span>Powered by <b>Payaza</b></span><span><a href="#contact">Contact</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#faq"><b>Support</b></a></span></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="curtain" id="curtain"></div>
+<div class="toast" id="toast" role="status"><img src="img/product.webp" alt=""><span id="toastt">Suede Vanilla Scented Candle added to cart</span><a href="#checkout">View bag</a></div>
+
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IMG='img/product.webp';
+const cartIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2.5 4h2.2l2 10.2h9.6l1.9-7.2H6"/><circle cx="9" cy="18.5" r="1.3"/><circle cx="15.5" cy="18.5" r="1.3"/><circle cx="18.5" cy="15.5" r="3.6" fill="#fff"/><path d="M18.5 13.9v3.2M16.9 15.5h3.2"/></svg>';
+const card=(i,cls='')=>`<article class="card ${cls}" style="--i:${i}"><a class="ph" href="#product" aria-label="View Suede Vanilla Scented Candle"><img src="${IMG}" alt="Suede Vanilla Scented Candle in a copper jar" loading="lazy"></a><div class="info"><h4>Suede Vanilla Scented Candle</h4><p class="sub">Private Collection, luxury scented candle, 360 gr</p><div><span class="price">£22.90</span><span class="unit">360 gr (£113.61 / 1 kg)</span></div><button class="addc" type="button" aria-label="Add Suede Vanilla Scented Candle to cart">${cartIcon}</button></div></article>`;
+$$('[data-cards]').forEach(g=>{g.innerHTML=Array.from({length:+g.dataset.cards},(_,i)=>card(i)).join('');g.querySelectorAll('.card').forEach(c=>c.classList.add('rv'))});
+const lg=$('#listgrid');lg.innerHTML=Array.from({length:9},(_,i)=>card(i)).join('');
+lg.querySelectorAll('.card').forEach((c,i)=>{c.setAttribute('data-r','');c.style.setProperty('--i',2+i)});
+
+/* ---------- nav sets per screen (as designed) ---------- */
+const NAV_A=[['All Candles','#all-candles'],['Flower Candles','#all-candles'],['Luxury','#product'],['Other Collection','#all-candles']];
+const NAV_B=[['Sale','#all-candles'],['New Arrival','#all-candles'],['Women','#all-candles'],['Best Selling','#all-candles']];
+const navFor={home:NAV_A,'all-candles':NAV_A,product:NAV_A};
+function setNav(v){const set=navFor[v]||NAV_B;$('#nav').innerHTML=set.map(([t,h],i)=>`<a href="${h}" class="${(v==='all-candles'&&i===0)?'on':''}">${t}</a>`).join('')}
+
+/* ---------- router ---------- */
+const VIEWS=$$('.view').map(v=>v.dataset.view);
+let current=null,busy=false;
+function route(){
+  let v=(location.hash||'#home').slice(1);if(!VIEWS.includes(v))v='home';
+  if(v===current)return;
+  document.body.classList.remove('navopen');
+  const next=$(`.view[data-view="${v}"]`),prev=current&&$(`.view[data-view="${current}"]`);
+  const show=()=>{
+    $$('.view').forEach(x=>x.classList.remove('active','leaving','entering'));
+    setNav(v);next.classList.add('active');
+    if(!reduce){next.classList.add('entering');setTimeout(()=>next.classList.remove('entering'),1900)}
+    window.scrollTo(0,0);current=v;busy=false;
+    if(v==='product')placeInd();
+    if(v==='faq')spy();
+    document.title=({home:'Udohbé Candles','all-candles':'All Candles · Udohbé',product:'Suede Vanilla · Udohbé',checkout:'Checkout · Udohbé','order-placed':'Order Successful · Udohbé',contact:'Contact Us · Udohbé',faq:'FAQs · Udohbé'})[v];
+  };
+  if(!prev||reduce){show();return}
+  busy=true;
+  const big=(v==='order-placed'||current==='order-placed');
+  if(big){const c=$('#curtain');c.classList.remove('go');void c.offsetWidth;c.classList.add('go');setTimeout(show,380)}
+  else{prev.classList.add('leaving');setTimeout(show,300)}
+}
+addEventListener('hashchange',route);
+
+/* ---------- header ---------- */
+const hdr=$('#hdr'),herobg=$('#herobg');
+addEventListener('scroll',()=>{const y=scrollY;hdr.classList.toggle('scrolled',y>10);if(current==='home'&&!reduce&&y<900)herobg.style.transform=`translate3d(0,${y*.28}px,0)`},{passive:true});
+$('#burger').onclick=()=>document.body.classList.toggle('navopen');
+function dropdown(root,onPick){
+  const b=root.querySelector(':scope>button');
+  b.addEventListener('click',e=>{e.stopPropagation();const o=!root.classList.contains('open');$$('.open').forEach(x=>{if(x.matches('.cur,.filt'))x.classList.remove('open')});root.classList.toggle('open',o);b.setAttribute('aria-expanded',o)});
+  root.querySelectorAll('.menu button').forEach(m=>m.addEventListener('click',e=>{e.stopPropagation();root.querySelectorAll('.menu button').forEach(x=>x.setAttribute('aria-checked',x===m));root.classList.remove('open');b.setAttribute('aria-expanded',false);onPick&&onPick(m,root)}));
+}
+document.addEventListener('click',()=>$$('.cur.open,.filt.open').forEach(x=>{x.classList.remove('open');x.querySelector('button').setAttribute('aria-expanded',false)}));
+dropdown($('#cur'),m=>{$('#curl').textContent=m.dataset.c});
+$$('.filt').forEach(f=>dropdown(f,(m,r)=>r.classList.add('set')));
+$('#heart').onclick=e=>{const s=e.currentTarget.querySelector('path');const on=s.getAttribute('fill')!=='#000';s.setAttribute('fill',on?'#000':'none');e.currentTarget.animate([{transform:'scale(1)'},{transform:'scale(1.3)'},{transform:'scale(1)'}],{duration:450,easing:'cubic-bezier(.22,1,.36,1)'})};
+
+/* ---------- cart state ---------- */
+let cart=[{q:1},{q:1},{q:1}],pristine=true;const UNIT=20.80;
+const badge=$('#badge');
+function count(){return cart.reduce((a,c)=>a+c.q,0)}
+function setBadge(bump){const n=count();badge.textContent=n;badge.classList.toggle('show',n>0);if(bump&&!reduce){badge.classList.remove('bump');void badge.offsetWidth;badge.classList.add('bump')}}
+const gbp=n=>'£'+n.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
+function tween(el,to,fmt){if(reduce){el.textContent=fmt(to);return}const from=parseFloat((el.dataset.v||el.textContent).replace(/[^0-9.\-]/g,''))||0;const t0=performance.now();el.dataset.v=to;(function f(t){const k=Math.min(1,(t-t0)/600),e=1-Math.pow(1-k,4);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(f)})(t0)}
+let shipFee=null;
+function totals(){
+  if(pristine)return;
+  const sub=count()*UNIT,dis=sub>0?0.6:0,sh=shipFee??0;
+  tween($('#t-sub'),sub,gbp);tween($('#t-dis'),dis,n=>'-'+gbp(n));tween($('#t-ship'),sh,gbp);tween($('#t-tot'),Math.max(0,sub-dis+sh),gbp);
+}
+function renderItems(){
+  const box=$('#items');
+  if(!cart.length){box.innerHTML='<p class="empty">Your bag is empty. <a href="#all-candles" style="text-decoration:underline">Shop all candles</a></p>';return}
+  box.innerHTML=cart.map((c,i)=>`<div class="item" data-i="${i}"><img src="${IMG}" alt=""><div><h5>Suede Candle</h5><small>Size: 250gm</small><div class="mini"><button type="button" aria-label="Decrease" data-d="-1"><svg width="9" height="1" viewBox="0 0 9 1"><path d="M0 .5h9" stroke="currentColor"/></svg></button><output>${c.q}</output><button type="button" aria-label="Increase" data-d="1"><svg width="9" height="9" viewBox="0 0 9 9"><path d="M0 4.5h9M4.5 0v9" stroke="currentColor"/></svg></button><button type="button" class="rm">Remove</button></div></div><span class="p">${gbp(UNIT*c.q)}</span></div>`).join('');
+}
+$('#items').addEventListener('click',e=>{
+  const it=e.target.closest('.item');if(!it)return;const i=+it.dataset.i;
+  if(e.target.closest('.rm')){pristine=false;it.classList.add('gone');setTimeout(()=>{cart.splice(i,1);renderItems();totals();setBadge(true)},380);return}
+  const d=e.target.closest('[data-d]');if(!d)return;pristine=false;
+  cart[i].q=Math.max(1,cart[i].q+(+d.dataset.d));const o=it.querySelector('output');o.textContent=cart[i].q;o.classList.remove('tick');void o.offsetWidth;o.classList.add('tick');it.querySelector('.p').textContent=gbp(UNIT*cart[i].q);totals();setBadge(true);
+});
+renderItems();setBadge(false);
+let toastT;
+function addToCart(n=1){pristine=false;if(cart.length)cart[0].q+=n;else cart.push({q:n});renderItems();totals();setBadge(true);const t=$('#toast');$('#toastt').textContent=`Suede Vanilla Scented Candle${n>1?' × '+n:''} added to cart`;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600)}
+document.addEventListener('click',e=>{const b=e.target.closest('.addc');if(!b)return;e.preventDefault();addToCart(1);b.classList.add('done');b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';setTimeout(()=>{b.classList.remove('done');b.innerHTML=cartIcon},1600)});
+
+/* ---------- shipping ---------- */
+$('#ship').addEventListener('click',e=>{const o=e.target.closest('.opt');if(!o)return;$$('#ship .opt').forEach(x=>x.setAttribute('aria-checked',x===o));pristine=false;shipFee=+o.dataset.fee;totals()});
+$('#pay').onclick=e=>{const b=e.currentTarget;if(b.classList.contains('busy'))return;if(!cart.length){location.hash='all-candles';return}b.classList.add('busy');$('#payl').textContent='Processing payment…';setTimeout(()=>{location.hash='order-placed';setTimeout(()=>{b.classList.remove('busy');$('#payl').textContent='Pay with Payaza'},900)},reduce?200:1350)};
+
+/* ---------- listing: view more ---------- */
+let shown=9;
+$('#more').onclick=()=>{if(shown>=27)return;const html=Array.from({length:9},(_,i)=>card(i,'new')).join('');lg.insertAdjacentHTML('beforeend',html);shown+=9;$('#count').textContent=`${shown}/27`;$('#prog').style.transform=`scaleX(${shown/27})`;if(shown>=27){$('#more').textContent='All items shown';$('#more').disabled=true}};
+
+/* ---------- product ---------- */
+let qty=1;const PRICE=410.50;
+const szs=$$('#sizes .sz'),ind=$('#szind');
+function placeInd(){const s=szs.find(x=>x.getAttribute('aria-checked')==='true');if(!s)return;ind.style.left=s.offsetLeft+'px';ind.style.width=s.offsetWidth+'px'}
+szs.forEach(s=>s.onclick=()=>{szs.forEach(x=>x.setAttribute('aria-checked',x===s));placeInd();const im=$('#gal img');im.animate([{transform:'scale(.92)',opacity:.4},{transform:'scale(1)',opacity:1}],{duration:600,easing:'cubic-bezier(.22,1,.36,1)'})});
+addEventListener('resize',placeInd);
+$$('[data-q]').forEach(b=>b.onclick=()=>{qty=Math.max(1,Math.min(20,qty+(+b.dataset.q)));const o=$('#qty');o.textContent=qty;o.classList.remove('tick');void o.offsetWidth;o.classList.add('tick');tween($('#pprice'),PRICE*qty,gbp)});
+$$('.acc>button').forEach(b=>b.onclick=()=>{const a=b.parentElement,o=!a.classList.contains('open');a.classList.toggle('open',o);b.setAttribute('aria-expanded',o)});
+$('#addcart').onclick=e=>{const b=e.currentTarget;if(b.classList.contains('busy'))return;b.classList.add('busy');$('#addl').textContent='Adding…';setTimeout(()=>{addToCart(qty);$('#addl').textContent='Added to cart';setTimeout(()=>{b.classList.remove('busy');$('#addl').textContent='Add to cart'},1400)},reduce?0:850)};
+const gal=$('#gal');gal.addEventListener('mousemove',e=>{const r=gal.getBoundingClientRect();gal.querySelector('img').style.transformOrigin=`${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`});
+
+/* ---------- faq ---------- */
+$$('.qa>button').forEach(b=>b.onclick=()=>{const a=b.parentElement,o=!a.classList.contains('open');a.classList.toggle('open',o);b.setAttribute('aria-expanded',o)});
+const fq=$('#fqnav'),fqi=fq.querySelector('i'),fqa=$$('a',fq);
+fqa.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.getElementById(a.dataset.to);scrollTo({top:t.getBoundingClientRect().top+scrollY-130,behavior:reduce?'auto':'smooth'})}));
+function spy(){if(current!=='faq')return;let on=fqa[0];fqa.forEach(a=>{if(document.getElementById(a.dataset.to).getBoundingClientRect().top<240)on=a});fqa.forEach(a=>a.classList.toggle('on',a===on));fqi.style.transform=`translateY(${on.offsetTop}px)`}
+addEventListener('scroll',spy,{passive:true});
+
+/* ---------- forms & copy ---------- */
+$$('[data-sub]').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();const i=f.querySelector('input'),n=f.parentElement.querySelector('.formnote');const ok=/^\S+@\S+\.\S+$/.test(i.value.trim());n.textContent=ok?'Thanks, you’re on the list.':'Enter a valid email address, like name@example.com.';if(ok){i.value='';f.animate([{transform:'translateY(0)'},{transform:'translateY(-4px)'},{transform:'translateY(0)'}],{duration:400})}else f.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:320})}));
+$('#coform').addEventListener('submit',e=>e.preventDefault());
+$$('[data-copy]').forEach(b=>b.onclick=()=>{const done=()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)};try{navigator.clipboard.writeText(b.dataset.copy).then(done,()=>{sel(b);});}catch(_){sel(b)}});
+function sel(b){const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'}
+
+route();
+})();
+</script>
+</body>
+</html>
